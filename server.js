@@ -9,11 +9,24 @@ const documentRoutes = require('./routes/document');
 const http = require('http');
 const WebSocket = require('ws');
 const { setupWebSocket } = require('./config/wss'); // Import du module WebSocket
+var RateLimit = require('express-rate-limit');
 
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// limiteur de requête
+app.use(express.json({ limit: '10kb' }));
+
+// set up rate limiter: maximum of 100 requests per 15 minutes
+var RateLimit = require('express-rate-limit');
+var limiter = RateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200, // max 200 requests per windowMs
+});
+app.use(limiter);
+
 
 // Création du serveur HTTP
 const server = http.createServer(app);
