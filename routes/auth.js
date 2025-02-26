@@ -1,10 +1,12 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const lusca = require('lusca');
 const { executeQuery } = require('../config/db');
 const { hashPassword, verifyPassword,generateToken,verificationAll,generateSecondaryKey,verifyGoogleToken } = require('../utils/crypto');
 
 const router = express.Router();
 router.use(cookieParser());
+router.use(lusca.csrf());
 // Route d'inscription
 router.post('/register', async (req, res) => {
     const username = req.body.username;
