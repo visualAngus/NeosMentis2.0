@@ -1,3 +1,13 @@
+let csrfToken;
+try {
+    const metaElement = document.querySelector('meta[name="csrf-token"]');
+    csrfToken = metaElement ? metaElement.getAttribute('content') : null;
+    console.log('CSRF Token:', csrfToken);
+} catch (error) {
+    console.error('Erreur lors de la récupération du token CSRF:', error);
+    csrfToken = null;
+}
+
 function togglePassword(cote) {
     if (cote == 1){
         let left_section = document.querySelector(".left_section");
@@ -32,21 +42,31 @@ submitButton.addEventListener("click", function () {
     login(password, username);
 });
 
+async function login(password, username) {
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    
+    // Ajouter le token CSRF avec tous les noms d'en-tête possibles
+    if (csrfToken) {
+        headers['CSRF-Token'] = csrfToken;
+        headers['X-CSRF-Token'] = csrfToken;
+        headers['csrf-token'] = csrfToken;
+        headers['_csrf'] = csrfToken;
+    }
 
-async function login(password , username) {
     let response = await fetch("/auth/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
+        headers: headers,
+        body: JSON.stringify({ username, password }),
+        credentials: 'same-origin' // Important pour inclure les cookies
     });
 
     let data = await response.json();
     if (data.success) {
         window.location.href = "/";
     } else {
-        document.querySelector(".password_complexity p").textContent = data.error;
+        document.querySelector(".password_complexity p").textContent = data.error || "Erreur de connexion";
         document.querySelector(".password_complexity p").style.color = "var(--contrast-red)";
     }
 }

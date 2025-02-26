@@ -3,10 +3,28 @@ const cookieParser = require('cookie-parser');
 const { executeQuery } = require('../config/db');
 const { verificationAll,generateDocumentKey,encryptWithSecondaryKey,decryptDocument,encryptKeyWithSecondaryKey ,getDocumentKey} = require('../utils/crypto');
 const { decrypt } = require('dotenv');
+const csrf = require('lusca').csrf;
 
 const router = express.Router();
 router.use(cookieParser());
 router.use(express.json());
+
+const verifyCsrf = (req, res, next) => {
+    // Le token CSRF doit être présent dans l'en-tête pour les requêtes AJAX/fetch
+    const csrfToken = req.headers['csrf-token'] || req.headers['x-csrf-token'] || req.headers['CSRF-Token'];
+    
+    // Vérifier si le token est présent
+    if (!csrfToken && req.method !== 'GET') {
+        return res.status(403).json({ error: 'CSRF token manquant' });
+    }
+    
+    // Passer au middleware suivant
+    next();
+};
+router.use(verifyCsrf);
+
+
+
 // Route de création de document
 router.post('/create', async (req, res) => {
     let data = verificationAll(req, res);
@@ -179,12 +197,12 @@ router.post('/update/:id', async (req, res) => {
 });
 
 // Route de suppression de document
-router.get('/delete/:id', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     let data = verificationAll(req, res);
     if (!data) {
         return res.status(401).json({ error: 'Non autorisé' });
     }
-    const doc_id = req.params.id;
+    const doc_id = req.body.id;
     try {
         const row = await executeQuery('SELECT * FROM user_documents WHERE user_id_link = ? AND document_id_link = ? AND etat = 0', [data.userID, doc_id]);
         if (row.length === 0) return res.status(404).json({ error: 'Document non trouvé' });

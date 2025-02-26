@@ -179,14 +179,25 @@ async function get_documents() {
 get_documents();
 
 async function new_document() {
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    
+    // Ajouter le token CSRF avec tous les noms d'en-tête possibles
+    if (csrfToken) {
+        headers['CSRF-Token'] = csrfToken;
+        headers['X-CSRF-Token'] = csrfToken;
+        headers['csrf-token'] = csrfToken;
+        headers['_csrf'] = csrfToken;
+    }
+
     fetch('/document/create', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify({
             title: 'Nouveau document',
-        })
+        }),
+        credentials: 'same-origin'
     })
         .then(response => response.json())
         .then(data => {
@@ -197,23 +208,33 @@ async function new_document() {
 }
 
 async function delete_document(id) {
-    fetch('/document/delete/' + id)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+    // requête pour supprimer le document
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    if (csrfToken) {
+        headers['CSRF-Token'] = csrfToken;
+        headers['X-CSRF-Token'] = csrfToken;
+        headers['csrf-token'] = csrfToken;
+        headers['_csrf'] = csrfToken;
+    }
+
+    fetch('/document/delete', {
+        method: 'DELETE',
+        headers: headers,
+        body: JSON.stringify({
+            id: id,
+        }),
+        credentials: 'same-origin'
+    })
+        .then(response => response.json())
         .then(data => {
-            document.getElementById(id).remove();
-            div_documents = document.querySelectorAll('.div_document');
-            if (div_documents.length < 4) {
-                btn_suivant.style.display = 'none';
+            if (data.message == "Document supprimé") {
+                let div_to_delete = document.getElementById(id);
+                div_to_delete.remove();
             }
         })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
 }
 
 

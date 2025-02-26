@@ -1,3 +1,13 @@
+let csrfToken;
+try {
+    const metaElement = document.querySelector('meta[name="csrf-token"]');
+    csrfToken = metaElement ? metaElement.getAttribute('content') : null;
+    console.log('CSRF Token:', csrfToken);
+} catch (error) {
+    console.error('Erreur lors de la récupération du token CSRF:', error);
+    csrfToken = null;
+}
+
 function get_user_info(){
     fetch('/user/get_info')
     .then(response => response.json())

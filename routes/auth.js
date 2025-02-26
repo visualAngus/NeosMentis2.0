@@ -1,12 +1,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const lusca = require('lusca');
 const { executeQuery } = require('../config/db');
 const { hashPassword, verifyPassword,generateToken,verificationAll,generateSecondaryKey,verifyGoogleToken } = require('../utils/crypto');
 
 const router = express.Router();
 router.use(cookieParser());
-router.use(lusca.csrf());
+
 // Route d'inscription
 router.post('/register', async (req, res) => {
     const username = req.body.username;
@@ -42,6 +41,10 @@ router.post('/register', async (req, res) => {
 });
 // Route de connexion
 router.post('/login', async (req, res) => {
+    // ver la certification 
+
+
+
     const username = req.body.username;
     const password = req.body.password;
     if (!username || !password) return res.status(400).json({ error: 'Champs requis' });

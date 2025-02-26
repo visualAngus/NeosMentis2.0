@@ -2,10 +2,22 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const { executeQuery } = require('../config/db');
 const { verificationAll } = require('../utils/crypto');
-
 const router = express.Router();
 
 router.use(cookieParser());
+const verifyCsrf = (req, res, next) => {
+    // Le token CSRF doit être présent dans l'en-tête pour les requêtes AJAX/fetch
+    const csrfToken = req.headers['csrf-token'] || req.headers['x-csrf-token'] || req.headers['CSRF-Token'];
+    
+    // Vérifier si le token est présent
+    if (!csrfToken && req.method !== 'GET') {
+        return res.status(403).json({ error: 'CSRF token manquant' });
+    }
+    
+    // Passer au middleware suivant
+    next();
+};
+router.use(verifyCsrf);
 
 router.get('/get_all_collaborateur_by_user', async (req, res) => {
     let data = verificationAll(req, res);

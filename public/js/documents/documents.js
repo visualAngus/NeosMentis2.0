@@ -53,14 +53,26 @@ document.querySelector('.div_new_doc').addEventListener('click', new_document);
 
 
 async function new_document() {
+
+    const headers = {
+        "Content-Type": "application/json"
+    };
+    
+    if (csrfToken) {
+        headers['CSRF-Token'] = csrfToken;
+        headers['X-CSRF-Token'] = csrfToken;
+        headers['csrf-token'] = csrfToken;
+        headers['_csrf'] = csrfToken;
+    }
+
+
     fetch('/document/create', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify({
             title: 'Nouveau document',
-        })
+        }),
+        credentials: 'same-origin'
     })
         .then(response => response.json())
         .then(data => {
