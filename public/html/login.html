@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neosmentis - Connexion</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Staatliches&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+    <main>
+        <section class="left_section">
+            <h2>Connexion</h2>
+            <div class="div_form">
+                <input type="text" placeholder="Nom d'utilisateur ou email" id="username">
+                <div class="password-container">
+                    <input type="password" placeholder="Mot de passe" id="password">
+                    <button type="button" class="toggle-password"onclick="togglePassword(1)">
+                        <img src="/logo/icon/oeil_show.svg" alt="show">
+                    </button>
+                </div>
+                <button type="submit" class="login">Se connecter</button>
+            </div>
+        </section>
+        <section class="right_section">
+            <h2>Créer un compte</h2>
+            <div class="div_form">
+                <input type="text" placeholder="Nom d'utilisateur" id="username">
+                <input type="email" placeholder="Email" id="email">
+                <div class="password-container">
+                    <input type="password" placeholder="Mot de passe" id="password">
+                    <button type="button" class="toggle-password" onclick="togglePassword(2)">
+                        <img src="/logo/icon/oeil_show.svg" alt="show">
+                    </button>
+                </div>
+                <div class="password_complexity">
+                    <div class="div_strong" id="1"></div>
+                    <div class="div_strong" id="2"></div>
+                    <div class="div_strong" id="3"></div>
+                    <div class="div_strong" id="4"></div>
+                    <div class="div_strong" id="5"></div>
+
+                    <p></p>
+                </div>
+                <button type="submit" class="register">S'inscrire</button>
+        </section>
+    </main>
+
+</body>
+<script src="js/login/login.js"></script>
+<script src="js/login/registerjs"></script>
+</html>

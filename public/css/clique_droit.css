@@ -1,0 +1,44 @@
+.clique{
+
+    position: absolute;
+
+    background-color:var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: self-start;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.clique-item{
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+
+    
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    user-select: none;
+    cursor: pointer;
+
+    transition: background-color 0.3s var(--smooth-transition);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+.clique-item:hover{
+    background-color: var(--light-blue);
+}
+.delete:hover{
+    background-color: var(--rouge-ok);
+}

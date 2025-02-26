@@ -1,0 +1,81 @@
+/* light mode */
+
+:root{
+    --background-color: #F4F6F8;
+    --text-color: #262626;
+    --greyish-blue: #586F7C;
+    --tonic-blue: #3A8DFF;
+    --light-blue:#B8DBD9;
+    --near-white: #F4F6F8;
+    --contrast-green: #04724D;
+    --ultra-constrast-yellow: #E3B505;
+    --contrast-red: #f11515;
+
+    --green-online: #0cce0c;
+
+    --blue-shadow: #1a233796;
+    --blue-shadow-soft: #1a23373f;
+
+    --gold-white: #e4e2cf;
+    --border-color: #26262625;
+
+    --rouge-ok: #eb4444;
+    --orange-ok: #f3a531;
+    --vert-ok: #6bbd72;
+
+
+    --padding : 20px;
+    --border-radius: 20px;
+    --smooth-transition: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --shadow : 4px 4px 12px 0px var(--blue-shadow-soft);
+    --shadow-hover : 15px 15px 12px 0px var(--blue-shadow-soft);
+
+}
+
+/* dark mode */
+
+:root.dark-mode{
+    --background-color: #262626;
+    --text-color: #F4F6F8;
+    --greyish-blue: #586F7C;
+    --light-blue:#B8DBD9;
+    --near-white: #F4F6F8;
+    --contrast-green: #04724D;
+    --ultra-constrast-yellow: #746a46;
+}
+
+/* titre */
+.exemple_title{
+    font-family: "Staatliches", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.5rem;
+}
+
+/* reset */
+.exemple_rest{
+
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    scrollbar-width:thin;
+    scrollbar-color: var(--greyish-blue) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 4px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--greyish-blue);
+    border-radius: 10px;
+}
