@@ -69,16 +69,33 @@ const csrfProtection = csrf({
     ignoreMethods: []
 });
 
+/**
+ * Injects CSRF token into HTML file and sends the response
+ * @param {string} filePath - Path to the HTML file
+ * @param {object} res - Express response object
+ * @param {object} req - Express request object
+ * @param {string} csrfToken - CSRF token to inject
+ */
 function injectCSRFToken(filePath, res, req, csrfToken) {
     fs.readFile(filePath, 'utf8', (err, html) => {
         if (err) {
-            console.error('Erreur de lecture du fichier HTML:', err);
-            return res.status(500).send('Erreur serveur');
+            console.error(`Error reading HTML file ${filePath}:`, err);
+            return res.status(500).send('Server Error');
         }
         
-        const modifiedHtml = html.replace('<meta name="csrf-token" content="" id="csrf-token-meta">', 
-                                         `<meta name="csrf-token" content="${csrfToken}" id="csrf-token-meta">`);
+        // Use a more specific regex to ensure we only replace the right meta tag
+        const metaTagRegex = /<meta\s+name=["']csrf-token["']\s+content=["'].*?["']\s+id=["']csrf-token-meta["']\s*\/?>/i;
         
+        if (!metaTagRegex.test(html)) {
+            console.warn(`CSRF meta tag not found in ${filePath}`);
+        }
+        
+        const modifiedHtml = html.replace(
+            metaTagRegex, 
+            `<meta name="csrf-token" content="${csrfToken}" id="csrf-token-meta">`
+        );
+        
+        res.setHeader('Content-Type', 'text/html');
         res.send(modifiedHtml);
     });
 }
